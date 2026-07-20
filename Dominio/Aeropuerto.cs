@@ -43,14 +43,14 @@ namespace Dominio
         {
             if (string.IsNullOrWhiteSpace(this._codigo) || this._codigo.Length != 3)
             {
-                throw new Exception("El código IATA debe tener exactamente 3 caracteres");
+                throw new Exception("El código IATA debe tener exactamente 3 caracteres.");
             }
 
             foreach (char caracter in this._codigo)
             {
                 if (!char.IsLetter(caracter))
                 {
-                    throw new Exception("El código IATA no debe contener números");
+                    throw new Exception("El código IATA no debe contener números.");
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace Dominio
         {
             if (string.IsNullOrWhiteSpace(this._ciudad))
             {
-                throw new Exception("El nombre de la ciudad no puede estar vacío");
+                throw new Exception("El nombre de la ciudad no puede estar vacío.");
             }
         }
 
@@ -67,7 +67,7 @@ namespace Dominio
         {
             if (this._costoOperacion < 0)
             {
-                throw new Exception("El costo de operación no puede ser negativo");
+                throw new Exception("El costo de operación no puede ser negativo.");
             }
         }
 
@@ -75,7 +75,7 @@ namespace Dominio
         {
             if (this._costoTasas < 0)
             {
-                throw new Exception("El costo de las tasas no puede ser negativa");
+                throw new Exception("El costo de las tasas no puede ser negativa.");
             }
         }
 
@@ -89,7 +89,7 @@ namespace Dominio
             this._costoOperacion = costoOperacion;
             this._costoTasas = costoTasas;
         }
-
+        // Compara dos objetos Aeropuerto por su código IATA - recibe por parámetro cualquier tipo de objeto
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Aeropuerto)) return false;

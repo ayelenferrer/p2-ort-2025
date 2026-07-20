@@ -11,6 +11,11 @@ namespace Dominio
     {
         private string _apodo;
 
+        public string Apodo
+        {
+            get { return _apodo; }
+        }
+
         public void Validar()
         {
             this.ValidarApodo();
@@ -20,7 +25,7 @@ namespace Dominio
         {
             if (string.IsNullOrWhiteSpace(this._apodo))
             {
-                throw new Exception("El apodo no puede estar vacío");
+                throw new Exception("El apodo no puede estar vacío.");
             }
         }
 

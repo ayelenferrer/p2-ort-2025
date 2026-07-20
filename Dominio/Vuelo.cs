@@ -36,15 +36,15 @@ namespace Dominio
 
         public void Validar()
         {
-            this.ValidarNumeroVuelo();
+            this.ValidarNumero();
             this.ValidarDistancia();
         }
 
-        private void ValidarNumeroVuelo()
+        private void ValidarNumero()
         {
             if (string.IsNullOrWhiteSpace(this._numero) || this._numero.Length < 3)
             {
-                throw new Exception("El número de vuelo debe tener un mínimo de 3 caracteres");
+                throw new Exception("El número de vuelo debe tener un mínimo de 3 caracteres.");
             }
 
             int index = 0;
@@ -55,14 +55,14 @@ namespace Dominio
                 {
                     if (!char.IsLetter(caracter))
                     {
-                        throw new Exception("Los dos primeros caracteres deben ser letras");
+                        throw new Exception("Los dos primeros caracteres deben ser letras.");
                     }
                 }
                 else
                 {
                     if (!char.IsDigit(caracter))
                     {
-                        throw new Exception("Los últimos caracteres deben ser números");
+                        throw new Exception("Los últimos caracteres deben ser números.");
                     }
                 }
                 index++;
@@ -72,7 +72,7 @@ namespace Dominio
 
             if (cantNumeros < 1 || cantNumeros > 4)
             {
-                throw new Exception("La parte numérica debe tener entre 1 y 4 dígitos");
+                throw new Exception("La parte numérica debe tener entre 1 y 4 dígitos.");
             }
         }
 
@@ -80,7 +80,7 @@ namespace Dominio
         {
             if (this._avion.Alcance < this._ruta.Distancia)
             {
-                throw new Exception("El avión no tiene alcance suficiente para cubrir esta ruta");
+                throw new Exception("El avión no tiene alcance suficiente para cubrir esta ruta.");
             }
         }
 

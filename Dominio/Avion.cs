@@ -51,7 +51,7 @@ namespace Dominio
         {
             if (string.IsNullOrWhiteSpace(this._fabricante))
             {
-                throw new Exception("El nombre del fabricante no puede estar vacío");
+                throw new Exception("El nombre del fabricante no puede estar vacío.");
             }
         }
 
@@ -59,7 +59,7 @@ namespace Dominio
         {
             if (string.IsNullOrEmpty(this._modelo))
             {
-                throw new Exception("El nombre del modelo no puede estar vacío");
+                throw new Exception("El nombre del modelo no puede estar vacío.");
             }
         }
 
@@ -67,7 +67,7 @@ namespace Dominio
         {
             if (this._cantidadAsientos < 0)
             {
-                throw new Exception("La cantidad de asientos no puede ser negativa");
+                throw new Exception("La cantidad de asientos no puede ser negativa.");
             }
         }
 
@@ -75,7 +75,7 @@ namespace Dominio
         {
             if (this._alcance < 0)
             {
-                throw new Exception("El alcance no puede ser negativo");
+                throw new Exception("El alcance no puede ser negativo.");
             }
         }
 
@@ -83,7 +83,7 @@ namespace Dominio
         {
             if (this._costoKm < 0)
             {
-                throw new Exception("El costo por km no puede ser negativo");
+                throw new Exception("El costo por km no puede ser negativo.");
             }
         }
 

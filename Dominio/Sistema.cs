@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Dominio.Ordenes;
 
 namespace Dominio
 {
@@ -86,7 +88,7 @@ namespace Dominio
         {
             if (this._usuarios.Contains(cliente))
             {
-                throw new Exception("Ya existe un cliente registrado con esa cédula");
+                throw new Exception("Ya existe un cliente registrado con esa cédula.");
             }
         }
 
@@ -98,7 +100,7 @@ namespace Dominio
             this.AgregarUsuario(cliente);
         }
 
-        public Cliente ObtenerCliente(string documento) //busca clientes específicos
+        public Cliente ObtenerCliente(string documento) //busca clientes específicos por documento
         {
             Cliente retorno = null;
             int i = 0;
@@ -110,6 +112,11 @@ namespace Dominio
                 }
                 i++;
             }
+            if (retorno == null)
+            {
+                throw new Exception("El cliente no fue encontrado en el sistema.");
+            }
+
             return retorno;
         }
 
@@ -127,52 +134,41 @@ namespace Dominio
             return retorno;
         }
 
-        public void ModificarPuntos(string documento, int nuevosPuntos)
+        public void ModificarPuntos(Premium clientePremium, int nuevosPuntos) //modifica los puntos de un cliente premium específico
         {
-            Cliente cliente = this.ObtenerCliente(documento);
-
-            if (cliente is Premium clientePremium)
+            if (nuevosPuntos < 0)
             {
-                clientePremium.Puntos = nuevosPuntos;
+                throw new Exception("Los puntos no pueden ser negativos.");
             }
-            else
-            {
-                throw new Exception("Este cliente no es premium");
-            }
+            clientePremium.Puntos = nuevosPuntos;
         }
 
-        public void CambiarElegibilidad(string documento, bool nuevoValor)
+        public void CambiarElegibilidad(Ocasional clienteOcasional, bool? nuevoValor) //modifica la elegibilidad de un cliente ocasional específico
         {
-            Cliente cliente = this.ObtenerCliente(documento);
-
-            if (cliente is Ocasional clienteOcasional)
+            if (nuevoValor == null)
             {
-                clienteOcasional.ElegibleRegalo = nuevoValor;
+                throw new Exception("Debe especificar la elegibilidad para un cliente ocasional.");
             }
-            else
-            {
-                throw new Exception("Este cliente no es ocasional y no tiene elegibilidad para regalos");
-            }
+            clienteOcasional.ElegibleRegalo = nuevoValor.Value;
         }
 
-        //Login
-        public Usuario Login(string username, string password)
+        public Usuario Login(string correo, string password) //recorre usuarios y retorna al usuario logueado
         {
-            foreach (Usuario usuario in this._usuarios)
+            Usuario retorno = null;
+            int i = 0;
+            while (i < this._usuarios.Count && retorno == null)
             {
-                if (usuario.Correo == username)
+                if (this._usuarios[i].Correo == correo && this._usuarios[i].Password == password)
                 {
-                    if (usuario.Password == password)
-                    {
-                        return usuario;
-                    }
-                    else
-                    {
-                        throw new Exception("Contraseña incorrecta");
-                    }
+                    retorno = this._usuarios[i];
                 }
+                i++;
             }
-            throw new Exception("Nombre de usuario o contraseña incorrecta");
+            if (retorno == null)
+            {
+                throw new Exception("Correo o contraseña inválidos. Verifique e intente nuevamente.");
+            }
+            return retorno;
         }
 
         //Aviones
@@ -209,7 +205,7 @@ namespace Dominio
         {
             if (this._aeropuertos.Contains(aeropuerto))
             {
-                throw new Exception("Ya existe un aeropuerto registrado con ese código IATA");
+                throw new Exception("Ya existe un aeropuerto registrado con ese código IATA.");
             }
         }
 
@@ -257,7 +253,7 @@ namespace Dominio
             this._vuelos.Add(vuelo);
         }
 
-        public Vuelo ObtenerVuelo(string numero) //busca vuelos específicos
+        public Vuelo ObtenerVuelo(string numero) //busca vuelos específicos por número
         {
             Vuelo retorno = null;
             int i = 0;
@@ -269,18 +265,45 @@ namespace Dominio
                 }
                 i++;
             }
+            if (retorno == null)
+            {
+                throw new Exception("El vuelo no fue encontrado en el sistema.");
+            }
             return retorno;
         }
 
-        public List<Vuelo> ListarVuelosPorAeropuerto(string codigo) //recorre vuelos y retorna una lista de vuelos por aeropuertos especificos
+        public List<Vuelo> ListarVuelosPorAeropuertos(string codSalida, string codLlegada) //recorre vuelos y retorna una lista de vuelos filtrada por aeropuertos especificos
         {
             List<Vuelo> retorno = new List<Vuelo>();
 
             foreach (Vuelo vuelo in this._vuelos)
             {
-                if (vuelo.Ruta.Salida.Codigo == codigo || vuelo.Ruta.Llegada.Codigo == codigo)
+                string salida = vuelo.Ruta.Salida.Codigo.ToUpper();
+                string llegada = vuelo.Ruta.Llegada.Codigo.ToUpper();
+
+                bool ingresoSalida = !string.IsNullOrWhiteSpace(codSalida);
+                bool ingresoLlegada = !string.IsNullOrWhiteSpace(codLlegada);
+
+                if (ingresoSalida && ingresoLlegada) //evalúo si es true
                 {
-                    retorno.Add(vuelo);
+                    if (salida == codSalida.ToUpper() && llegada == codLlegada.ToUpper())
+                    {
+                        retorno.Add(vuelo);
+                    }
+                }
+                else if (ingresoSalida) //si la salida OR llegada del vuelo actual coincide con el código de salida ingresado (por parámetro)
+                {
+                    if (salida == codSalida.ToUpper() || llegada == codSalida.ToUpper())
+                    {
+                        retorno.Add(vuelo);
+                    }
+                }
+                else if (ingresoLlegada) //si la salida OR llegada del vuelo actual coincide con el código de llegada ingresado (por parámetro)
+                {
+                    if (salida == codLlegada.ToUpper() || llegada == codLlegada.ToUpper())
+                    {
+                        retorno.Add(vuelo);
+                    }
                 }
             }
             return retorno;
@@ -289,8 +312,14 @@ namespace Dominio
         //Pasajes
         public void AgregarPasaje(Pasaje pasaje) //precarga de datos pasaje
         {
-            pasaje.Validar();
             this._pasajes.Add(pasaje);
+        }
+
+        public void EmitirPasaje(Vuelo vuelo, DateTime fecha, Cliente cliente, Equipaje equipaje) //crea el pasaje, valida sus datos y lo agrega a la lista de pasajes
+        {
+            Pasaje pasaje = new Pasaje(vuelo, fecha, cliente, equipaje);
+            pasaje.Validar();
+            AgregarPasaje(pasaje);
         }
 
         public List<Pasaje> ListarPasajesPorFechas(DateTime fecha1, DateTime fecha2) //recorre pasajes y retorna una lista de pasajes dadas dos fechas específicas
@@ -299,7 +328,7 @@ namespace Dominio
 
             foreach (Pasaje pasaje in this._pasajes)
             {
-                if (pasaje.Fecha >= fecha1 && pasaje.Fecha <= fecha2 || pasaje.Fecha <= fecha1 && pasaje.Fecha >= fecha2)
+                if (pasaje.Fecha >= fecha1 && pasaje.Fecha <= fecha2 || pasaje.Fecha <= fecha1 && pasaje.Fecha >= fecha2) //condicion para ver la fecha del pasaje está entre las 2 que me pasaron
                 {
                     retorno.Add(pasaje);
                 }
@@ -312,14 +341,33 @@ namespace Dominio
             this._pasajes.Sort();
         }
 
+        public void OrdenarPasajesPorFecha() //ordena la lista de pasajes por fecha
+        {
+            this._pasajes.Sort(new OrdenPasajePorFecha());
+        }
+
+        public List<Pasaje> ObtenerPasajesPorCliente(string documento) //busca pasajes específicos
+        {
+            List<Pasaje> retorno = new List<Pasaje>();
+
+            foreach (Pasaje pasaje in this._pasajes)
+            {
+                if (pasaje.Pasajero.Documento == documento)
+                {
+                    retorno.Add(pasaje);
+                }
+            }
+            return retorno;
+        }
+
         //Precargas
         private void PrecargarUsuarios()
         {
             // administradores
-            Administrador administrador1 = new Administrador("maria.smith@mail.com", "Maria2023Secure", "ClaveAdminA1");
+            Administrador administrador1 = new Administrador("cvargas@mail.com", "cvargas123", "Carlos");
             AgregarUsuario(administrador1);
 
-            Administrador administrador2 = new Administrador("luis.gomez@mail.com", "LuisPass2023", "AdminClave123");
+            Administrador administrador2 = new Administrador("luis.gomez@mail.com", "LuisPass2023", "Luis");
             AgregarUsuario(administrador2);
 
             // clientes premium

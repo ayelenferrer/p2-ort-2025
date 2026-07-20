@@ -7,7 +7,7 @@ using Dominio.Interfaces;
 
 namespace Dominio
 {
-    public abstract class Cliente : Usuario, IValidable
+    public abstract class Cliente : Usuario, IValidable, IComparable<Cliente>
     {
         private string _documento;
         private string _nombre;
@@ -39,7 +39,7 @@ namespace Dominio
         {
             if (string.IsNullOrWhiteSpace(this._documento))
             {
-                throw new Exception("El documento de identidad no puede estar vacío");
+                throw new Exception("El documento de identidad no puede estar vacío.");
             }
         }
 
@@ -47,7 +47,7 @@ namespace Dominio
         {
             if (string.IsNullOrWhiteSpace(this._nombre))
             {
-                throw new Exception("El nombre no puede estar vacío");
+                throw new Exception("El nombre no puede estar vacío.");
             }
         }
 
@@ -55,7 +55,7 @@ namespace Dominio
         {
             if (string.IsNullOrWhiteSpace(this._nacionalidad))
             {
-                throw new Exception("La nacionalidad no puede estar vacía");
+                throw new Exception("La nacionalidad no puede estar vacía.");
             }
         }
 
@@ -72,11 +72,17 @@ namespace Dominio
             this._nacionalidad = nacionalidad;
         }
 
+        //Compara clientes por documento - recibe por parámetro cualquier tipo de objeto
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Cliente)) return false;
             Cliente otro = (Cliente)obj;
             return this._documento.Equals(otro._documento);
+        }
+
+        public int CompareTo(Cliente? other)
+        {
+            return this._documento.CompareTo(other._documento);
         }
     }
 }

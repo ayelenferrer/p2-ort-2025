@@ -37,6 +37,11 @@ namespace Dominio
             get { return _pasajero; }
         }
 
+        public Equipaje Equipaje
+        {
+            get { return _equipaje; }
+        }
+
         public decimal Precio
         {
             get { return _precio; }
@@ -49,11 +54,21 @@ namespace Dominio
 
         private void ValidarFecha()
         {
+            if (this._fecha == DateTime.MinValue)
+            {
+                throw new Exception("Debe de ingresar una fecha para realizar la compra.");
+            }
+
+            if (this._fecha < DateTime.Today)
+            {
+                throw new Exception("La fecha del pasaje no puede ser anterior a la fecha actual.");
+            }
+
             Dia diaPasaje = (Dia)this._fecha.DayOfWeek;
 
             if (!this._vuelo.Frecuencia.Contains(diaPasaje))
             {
-                throw new Exception($"La fecha del pasaje no coincide con la frecuencia del vuelo");
+                throw new Exception($"La fecha del pasaje no coincide con la frecuencia del vuelo.");
             }
         }
 
@@ -93,7 +108,7 @@ namespace Dominio
 
         public int CompareTo(Pasaje? other)
         {
-            return this._precio.CompareTo(other._precio);
+            return this._precio.CompareTo(other._precio) * -1;
         }
     }
 }

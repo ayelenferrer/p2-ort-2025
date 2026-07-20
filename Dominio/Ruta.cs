@@ -43,7 +43,7 @@ namespace Dominio
         {
             if (this._distancia < 0)
             {
-                throw new Exception("La distancia de la ruta no puede ser negativa");
+                throw new Exception("La distancia de la ruta no puede ser negativa.");
             }
         }
 
@@ -51,7 +51,7 @@ namespace Dominio
         {
             if (this._salida == this._llegada)
             {
-                throw new Exception("El aeropuerto de salida no puede ser el mismo que el de llegada");
+                throw new Exception("El aeropuerto de salida no puede ser el mismo que el de llegada.");
             }
         }
 
