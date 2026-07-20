@@ -1,49 +1,45 @@
-# ✈️ Flight Reservation System - ASP.NET MVC
-
-This project is an academic prototype of an airline ticket sales system, developed using ASP.NET 8.0 MVC **without database persistence**. All data is managed in memory, simulating the real operation of the system.
-
-## 🧭 Main Features
-
-- User management for **administrators** and **customers** (premium and occasional).
-- Simulated catalog of **aircraft** and their characteristics.
-- Registration of **airports**, **routes**, and **flights**, with validations such as range and frequency.
-- **Ticket issuance** with dynamic price calculation, taking into account:
-  - Seat cost (distance, airport costs, and operational costs).
-  - Customer type and luggage.
-  - Departure and arrival fees.
-  - Profit margin.
-- Web interface built with ASP.NET 8.0 MVC and **role-based access control**.
-- Complete simulation without the need for SQL Server or Entity Framework.
-
-## 🔐 User Roles
-
-- **Administrator**:
-  - Can modify premium customers' points.
-  - Can change gift eligibility for occasional customers.
-  - Has access to protected administrative features.
-
-- **Customer**:
-  - Can view and purchase tickets.
-  - Can access personal information and reservations.
-  - Has different behavior depending on whether they are premium or occasional.
-
-## ⚙️ Technologies Used
-
+# ✈️ Sistema de Reservas de Vuelos - ASP.NET MVC
+ 
+Prototipo académico de un sistema de venta de pasajes aéreos, desarrollado con **ASP.NET 8.0 MVC** sin persistencia en base de datos. Todos los datos se manejan en memoria, simulando el funcionamiento real del sistema.
+ 
+## 🧭 Funcionalidades principales
+ 
+- Gestión de usuarios para administradores y clientes (premium y ocasionales).
+- Catálogo simulado de aviones y sus características.
+- Registro de aeropuertos, rutas y vuelos, con validaciones de alcance y frecuencia.
+- Emisión de pasajes con cálculo dinámico de precio, considerando:
+  - Costo del asiento (distancia, costos de aeropuerto y operativos).
+  - Tipo de cliente y equipaje.
+  - Tasas de salida y llegada.
+  - Margen de ganancia.
+- Interfaz web construida con ASP.NET 8.0 MVC y control de acceso por roles.
+- Simulación completa sin necesidad de SQL Server ni Entity Framework.
+## 🔐 Roles de usuario
+ 
+**Administrador:**
+- Puede modificar los puntos de clientes premium.
+- Puede cambiar la elegibilidad de regalos para clientes ocasionales.
+- Tiene acceso a funcionalidades administrativas protegidas.
+**Cliente:**
+- Puede ver y comprar pasajes.
+- Puede acceder a su información personal y reservas.
+- Tiene comportamiento distinto según sea premium u ocasional.
+## ⚙️ Tecnologías utilizadas
+ 
 - ASP.NET 8.0 MVC
 - C# .NET
 - CSS
 - JavaScript
 - Bootstrap 5
-- In-memory business logic (no SQL, no Entity Framework)
-- Role-based authentication and authorization
-
-## 🚀 How to Run the Project
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/codewitheduardo/Obl-P2-mar25.git
-   ```
-2. Open the project in Visual Studio 2022 or later.
-3. Run the application (F5 or dotnet run).
-4. Sample users and data are loaded automatically from the code.
-   
+- Lógica de negocio en memoria (sin SQL, sin Entity Framework)
+- Autenticación y autorización basada en roles
+## 🚀 Cómo ejecutar el proyecto
+ 
+1. Cloná el repositorio:
+```
+   git clone https://github.com/ayelenferrer/p2-ort-2025.git
+```
+2. Abrí el proyecto en Visual Studio 2022 o superior.
+3. Ejecutá la aplicación (F5 o `dotnet run`).
+4. Los usuarios y datos de ejemplo se cargan automáticamente desde el código.
+---
